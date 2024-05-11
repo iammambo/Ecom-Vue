@@ -58,31 +58,50 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Product $product)
     {
-        $validated = $request->validate([
+        $validateData = $request->validate([
             'name' => 'required|max:255',
             'description' => 'required',
             'price' => 'required|numeric',
         ]);
+        if ($product) {
 
-        $product->update($validated);
+            $product->update($validateData);
 
-        return response()->json([
-            'status' => true,
-            'product' => $product,
-        ], 200);
+            return response()->json([
+                'status' => true,
+                'product' => $product,
+            ], 200);
+
+        } else {
+            return response()->json([
+                'status' => true,
+                'message' => 'product not found',
+            ], 404);
+        }
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        $product = Product::find($id);
+        if ($product) {
 
-        $product->delete();
+            $product->delete();
 
-        return response('Deleted', 200);
+            return response()->json([
+                'status' => true,
+                'message' => 'product deleted',
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => true,
+                'message' => 'product not found',
+            ], 404);
+        }
+
     }
 }
