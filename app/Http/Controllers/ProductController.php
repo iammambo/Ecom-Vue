@@ -36,7 +36,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified resource. here
      */
     public function show($id)
     {
